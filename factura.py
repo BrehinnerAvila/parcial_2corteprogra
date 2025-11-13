@@ -19,14 +19,12 @@ catalogo = {
 }
 # Clase Factura
 class Factura:
-
     def __init__(self, cliente):
         self.cliente = cliente    # nombre del cliente
         self.items = []          #lista donde se guarddan los productos que comprsmo
         self.subtotal = 0    #precio sin iva
         self.iva = 0           #iva
         self.total = 0          #precio total con iva
-
     #creamos una funcion que agregue los productos a la factura
     def agregar_item(self, nombre, precio, cantidad):
         subtotal_item = precio * cantidad      #Hacemos la operacion para sacar el subtotal del producto
@@ -72,26 +70,61 @@ def buscar_producto(codigo): #creamos una funcion para buscar el producto por su
         if codigo in catalogo[categoria]:               #recorre las categorias y retorno el producto si lo encuentra
             return catalogo[categoria][codigo]
     return None
+# nueva funcion para mostrar las facturas guardadas
+import os
+def mostrar_facturas_guardadas():
+    print("\nFACTURAS GUARDADAS:")
+    archivos = [f for f in os.listdir() if f.startswith("factura_") and f.endswith(".txt")]
+    if len(archivos) == 0:
+        print("No hay facturas guardadas.")
+    else:
+        for i, archivo in enumerate(archivos, start=1):
+            print(i, "-", archivo)
+        opcion = int(input("\nIngrese el número de la factura que desea ver: "))
+        if 1 <= opcion <= len(archivos):
+            nombre_archivo = archivos[opcion - 1]
+            print("\nContenido de", nombre_archivo, ":\n")
+            with open(nombre_archivo, "r") as f:
+                print(f.read())
+        else:
+            print("Opción no válida.")
 # Programa principal
 def main():
     print("SISTEMA DE FACTURACIÓN ELECTRÓNICA\n")
     cliente = input("Ingrese el nombre del cliente: ")
     factura = Factura(cliente)
     while True:  #creamos un bucle para agregar productos
-        mostrar_catalogo()
-        codigo = input("\nIngrese el código del producto (o 'fin' para terminar): ")
-        if codigo.lower() == "fin":  #si escribe fin se acaba el ciclo
+        print("\n--- MENÚ ---")
+        print("1. Crear nueva factura")
+        print("2. Ver facturas guardadas")
+        print("3. Salir")
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            while True:
+                mostrar_catalogo()
+                codigo = input("\nIngrese el código del producto (o 'fin' para terminar): ")
+                if codigo.lower() == "fin":  #si escribe fin se acaba el ciclo
+                    break
+                producto = buscar_producto(codigo) #busca el rpoducto en el catalogo
+                if producto is None:
+                    print("Código no válido. Intente de nuevo.")
+                else:  #si el producto existe pide la anctidad y lo agrega ala facturs
+                    cantidad = int(input("Cantidad: "))
+                    nombre = producto[0]
+                    precio = producto[1]
+                    factura.agregar_item(nombre, precio, cantidad)
+                    print("Producto agregado con éxito.")
+            factura.calcular_totales()
+            factura.mostrar_factura()
+            factura.guardar_factura()
+
+        elif opcion == "2":
+            mostrar_facturas_guardadas()
+
+        elif opcion == "3":
+            print("Saliendo del sistema...")
             break
-        producto = buscar_producto(codigo) #busca el rpoducto en el catalogo
-        if producto is None:
-            print("Código no válido. Intente de nuevo.")
-        else:  #si el producto existe pide la anctidad y lo agrega ala facturs
-            cantidad = int(input("Cantidad: "))
-            nombre = producto[0]
-            precio = producto[1]
-            factura.agregar_item(nombre, precio, cantidad)
-            print("Producto agregado con éxito.")
-    factura.calcular_totales()
-    factura.mostrar_factura()
-    factura.guardar_factura()
+        else:
+            print("Opción no válida, intente de nuevo.")
 main()

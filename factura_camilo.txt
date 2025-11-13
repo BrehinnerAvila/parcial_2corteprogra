@@ -1,0 +1,9 @@
+FACTURA ELECTRÓNICA
+Cliente: camilo
+
+Producto	Precio	Cant.	Subtotal
+Televisor	950000	12	11400000
+
+Subtotal: 11400000
+IVA (19%): 2166000.0
+TOTAL: 13566000.0
