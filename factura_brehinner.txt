@@ -1,0 +1,9 @@
+FACTURA ELECTRÓNICA
+Cliente: brehinner
+
+Producto	Precio	Cant.	Subtotal
+Nevera	2500000	4	10000000
+
+Subtotal: 10000000
+IVA (19%): 1900000.0
+TOTAL: 11900000.0

@@ -1,0 +1,9 @@
+FACTURA ELECTRÓNICA
+Cliente: brehiner
+
+Producto	Precio	Cant.	Subtotal
+Aire 9000 BTU	1300000	2	2600000
+
+Subtotal: 2600000
+IVA (19%): 494000.0
+TOTAL: 3094000.0
